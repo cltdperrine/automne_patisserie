@@ -1,0 +1,22 @@
+import { neon } from '@neondatabase/serverless';
+import dotenv from 'dotenv'
+dotenv.config()
+
+const databaseClient = neon("postgresql://neondb_owner:npg_S9aIVu6PKQhR@ep-jolly-meadow-ab0dd0zk-pooler.eu-west-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require")
+
+async function createTable() {
+    await databaseClient`CREATE TABLE IF NOT EXISTS users (
+      id SERIAL PRIMARY KEY,
+      first_name TEXT NOT NULL,
+      last_name TEXT NOT NULL,
+      email TEXT UNIQUE NOT NULL,
+      password TEXT NOT NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    );`
+}
+
+createTable().then(() => {
+    console.log("Table created")
+}).catch((error) => {
+    console.log("Error during table creation", error)
+})
