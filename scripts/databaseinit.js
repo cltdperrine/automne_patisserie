@@ -24,6 +24,13 @@ description TEXT,
 allergens TEXT,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`;
+
+  await databaseClient`CREATE TABLE IF NOT EXISTS categories (
+id SERIAL PRIMARY KEY,
+name TEXT NOT NULL,
+image TEXT NOT NULL,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)`;
 }
 
 createTable()
