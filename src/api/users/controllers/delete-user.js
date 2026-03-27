@@ -14,7 +14,7 @@ export default async function deleteUser(req, res) {
 
     return res.status(200).send("User deleted");
   } catch (error) {
-    console.log("DELETE ERROR:", error);
+    console.log(error);
     return res.status(500).send("Error during user deletion");
   }
 }
