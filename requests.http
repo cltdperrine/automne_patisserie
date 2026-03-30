@@ -1,28 +1,27 @@
- POST http://localhost:5000/api/categories
-  Content-Type: application/json
+# POST http://localhost:5000/api/categories
+#    Content-Type: application/json
 
-  {
-      "name": "madeleines",
-      "image": ""
+#    {
+#        "name": "Pâtisseries",
+#        "image": "https://i.pinimg.com/1200x/86/bd/6e/86bd6e184792c5e29be52fe23434cbe8.jpg"
 
-  }
-
-###
-
-#  GET http://localhost:5000/api/users/9
+#    }
 
 ###
 
-# PATCH http://localhost:5000/api/users/9
-#  Content-Type: application/json
-
-#  {
-#      "email": "jfk@me.com"
-
-
-#  }
+# GET http://localhost:5000/api/categories/2
 
 ###
-# DELETE http://localhost:5000/api/users/8
+
+# PATCH http://localhost:5000/api/categories/1
+#   Content-Type: application/json
+
+#   {
+#       "name": "Madeleines",
+#       "image": "https://i.pinimg.com/1200x/9e/d5/2c/9ed52ca3290f8a3cceb34cc950d6541b.jpg"
+#   }
+
+###
+DELETE http://localhost:5000/api/categories/1
 
 
