@@ -1,6 +1,6 @@
 import databaseClient from "../../../services/database.js";
 
-export default async function deleteCategory(req, res) {
+export default async function deleteOrder(req, res) {
   const { id } = req.params;
 
   try {
@@ -8,13 +8,11 @@ export default async function deleteCategory(req, res) {
     DELETE FROM categories WHERE id = ${id} RETURNING *`;
 
     if (result.length === 0) {
-      return res.status(404).send("Category not found");
+      return res.status(404).send("order not found");
     }
-    return res.status(201).send("Category deleted");
+    return res.status(200).send("Order deleted");
   } catch (error) {
     console.log(error);
-    return res
-      .status(500)
-      .send("Error during category deletion", error.message);
+    return res.status(500).send("Error during order deletion", error.message);
   }
 }

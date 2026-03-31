@@ -1,7 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
 import apiRouter from "./api/index.js";
-import getUser from "./api/users/controllers/get-user.js";
 dotenv.config();
 
 const app = express();

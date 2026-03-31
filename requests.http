@@ -1,27 +1,28 @@
-# POST http://localhost:5000/api/categories
-#    Content-Type: application/json
+POST http://localhost:5000/api/images
+   Content-Type: application/json
 
-#    {
-#        "name": "Pâtisseries",
-#        "image": "https://i.pinimg.com/1200x/86/bd/6e/86bd6e184792c5e29be52fe23434cbe8.jpg"
+   {
+       "name": "Pancakes",
+       "url": "https://i.pinimg.com/736x/bb/38/8f/bb388f316a2a98e5367ba29f6fbb81a1.jpg"
 
-#    }
-
-###
-
-# GET http://localhost:5000/api/categories/2
+   }
 
 ###
 
-# PATCH http://localhost:5000/api/categories/1
-#   Content-Type: application/json
-
-#   {
-#       "name": "Madeleines",
-#       "image": "https://i.pinimg.com/1200x/9e/d5/2c/9ed52ca3290f8a3cceb34cc950d6541b.jpg"
-#   }
+GET http://localhost:5000/api/images/2
 
 ###
-DELETE http://localhost:5000/api/categories/1
+
+PATCH http://localhost:5000/api/images/2
+  Content-Type: application/json
+
+  {
+       "name": "Croissants",
+       "url": "https://i.pinimg.com/1200x/44/8d/32/448d32d4587586401fa209932344a126.jpg"
+  }
+
+###
+
+DELETE http://localhost:5000/api/images/2
 
 

@@ -24,7 +24,7 @@ export default async function patchCategory(req, res) {
     if (!result[0]) {
       return res.status(404).send("Category not found");
     }
-    return res.status(200).json(result[0]);
+    return res.status(201).json(result[0]);
   } catch (error) {
     console.log(error);
     return res.status(500).send("Error during category update", error.message);

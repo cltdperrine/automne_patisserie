@@ -31,6 +31,25 @@ name TEXT NOT NULL,
 image TEXT NOT NULL,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`;
+
+  await databaseClient`
+DROP TYPE IF EXISTS status CASCADE`;
+
+  await databaseClient`CREATE TYPE status as ENUM ('pending', 'canceled', 'fulfilled')`;
+
+  await databaseClient`CREATE TABLE IF NOT EXISTS orders (
+id SERIAL PRIMARY KEY,
+client_id INT,
+status status,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)`;
+
+  await databaseClient`CREATE TABLE IF NOT EXISTS images (
+id SERIAL PRIMARY KEY,
+name TEXT,
+url TEXT,
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+)`;
 }
 
 createTable()
