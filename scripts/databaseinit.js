@@ -6,7 +6,7 @@ const databaseClient = neon(
   "postgresql://neondb_owner:npg_S9aIVu6PKQhR@ep-jolly-meadow-ab0dd0zk-pooler.eu-west-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require",
 );
 
-async function createTable() {
+async function updateDatabase() {
   await databaseClient`CREATE TABLE IF NOT EXISTS users (
       id SERIAL PRIMARY KEY,
       first_name TEXT NOT NULL,
@@ -32,17 +32,24 @@ image TEXT NOT NULL,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`;
 
-  await databaseClient`
-DROP TYPE IF EXISTS status CASCADE`;
+  await databaseClient`DROP TABLE IF EXISTS orders CASCADE;`;
+
+  await databaseClient`DROP TYPE IF EXISTS status`;
 
   await databaseClient`CREATE TYPE status as ENUM ('pending', 'canceled', 'fulfilled')`;
 
   await databaseClient`CREATE TABLE IF NOT EXISTS orders (
 id SERIAL PRIMARY KEY,
 client_id INT,
-status status,
+status status NOT NULL DEFAULT 'pending',
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`;
+
+  await databaseClient`ALTER TABLE orders
+ADD CONSTRAINT fk_orders_user
+FOREIGN KEY (client_id)
+REFERENCES users(id)
+ON DELETE CASCADE`;
 
   await databaseClient`CREATE TABLE IF NOT EXISTS images (
 id SERIAL PRIMARY KEY,
@@ -50,12 +57,34 @@ name TEXT,
 url TEXT,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 )`;
+
+  await databaseClient`ALTER TABLE images
+ADD COLUMN IF NOT EXISTS product_id INT`;
+
+  await databaseClient`CREATE TABLE IF NOT EXISTS order_products (
+order_id INT REFERENCES orders(id) ON DELETE CASCADE,
+product_id INT REFERENCES products(id) ON DELETE CASCADE,
+quantity INT DEFAULT 1,
+PRIMARY KEY (order_id, product_id)
+)`;
+
+  await databaseClient` CREATE TABLE IF NOT EXISTS order_products (
+order_id INT REFERENCES orders(id) ON DELETE CASCADE,
+product_id INT REFERENCES produts(id) ON DELETE CASCADE,
+quantity INT DEFAULT 1,
+PRIMARY KEY (order_id, product_id))`;
+
+  await databaseClient`
+CREATE TABLE IF NOT EXISTS product_categories (
+product_id INT REFERENCES products(id) ON DELETE CASCADE,
+category_id INT REFERENCES categories(id) ON DELETE CASCADE,
+PRIMARY KEY (product_id, category_id))`;
 }
 
-createTable()
+updateDatabase()
   .then(() => {
-    console.log("Table created");
+    console.log("Database updated");
   })
   .catch((error) => {
-    console.log("Error during table creation", error);
+    console.log("Error during database update", error);
   });
