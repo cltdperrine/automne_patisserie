@@ -1,15 +1,15 @@
-POST http://localhost:5000/api/images
+POST http://localhost:5000/api/cart
    Content-Type: application/json
 
    {
-       "name": "Pancakes",
-       "url": "https://i.pinimg.com/736x/bb/38/8f/bb388f316a2a98e5367ba29f6fbb81a1.jpg"
+       "products_id": 3,
+       "users_id": 5
 
    }
 
 ###
 
-GET http://localhost:5000/api/images/2
+GET http://localhost:5000/api/cart/5
 
 ###
 

@@ -1,3 +1,4 @@
+import cartRouter from "./cart/routes.js";
 import categoriesRouter from "./categories/routes.js";
 import imagesRouter from "./images/routes.js";
 import ordersRouter from "./orders/routes.js";
@@ -12,5 +13,6 @@ apiRouter.use("/products", productsRouter);
 apiRouter.use("/categories", categoriesRouter);
 apiRouter.use("/orders", ordersRouter);
 apiRouter.use("/images", imagesRouter);
+apiRouter.use("/cart", cartRouter);
 
 export default apiRouter;
