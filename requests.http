@@ -23,6 +23,12 @@ PATCH http://localhost:5000/api/images/2
 
 ###
 
-DELETE http://localhost:5000/api/images/2
+DELETE http://localhost:5000/api/cart
+Content-Type: application/json
+
+{
+  "users_id": 5,
+  "products_id": 3
+}
 
 
