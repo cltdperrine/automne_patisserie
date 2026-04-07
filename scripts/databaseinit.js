@@ -85,11 +85,16 @@ await databaseClient`
 CREATE TABLE IF NOT EXISTS cart (
 products_id INT NOT NULL,
 users_id INT NOT NULL,
+quantity INT NOT NULL DEFAULT 1,
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 PRIMARY KEY(products_id, users_id),
 FOREIGN KEY(products_id) REFERENCES products(id),
 FOREIGN KEY(users_id) REFERENCES users(id)
 )`;
+
+await databaseClient`
+ALTER TABLE cart ADD COLUMN quantity INT NOT NULL DEFAULT 1;
+`;
 
 createDatabase()
   .then(() => {
