@@ -5,7 +5,7 @@ const cartRouter = Router();
 
 cartRouter.post("/", cartController.create);
 cartRouter.get("/:id", cartController.get);
-cartRouter.patch("/:products_id/:users_id", cartController.patch);
-cartRouter.delete("/", cartController.delete);
+cartRouter.patch("/:product_id/:user_id", cartController.patch);
+cartRouter.delete("/:product_id/:user_id", cartController.delete);
 
 export default cartRouter;

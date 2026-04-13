@@ -1,8 +1,8 @@
 import databaseClient from "../../../services/database.js";
 
 export default async function patchCart(req, res) {
-  const products_id = parseInt(req.params.products_id);
-  const users_id = parseInt(req.params.users_id);
+  const product_id = req.params.product_id;
+  const user_id = req.params.user_id;
   const { quantity } = req.body;
 
   try {
@@ -11,7 +11,7 @@ export default async function patchCart(req, res) {
     }
 
     const result = await databaseClient`
-        UPDATE cart SET quantity = ${quantity} WHERE products_id = ${products_id} AND users_id = ${users_id} RETURNING *`;
+        UPDATE cart SET quantity = ${quantity} WHERE product_id = ${product_id} AND user_id = ${user_id} RETURNING *`;
 
     if (!result[0]) {
       return res.status(404).send("Cart not found");
@@ -20,6 +20,8 @@ export default async function patchCart(req, res) {
     return res.status(200).json(result[0]);
   } catch (error) {
     console.log(error);
-    return res.status(500).send("Error during cart update", error.message);
+    return res
+      .status(500)
+      .send({ message: "Error during cart update", error: error.message });
   }
 }

@@ -1,7 +1,7 @@
 import databaseClient from "../../../services/database.js";
 
 export default async function patchOrder(req, res) {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const { client_id, status } = req.body;
 
   try {

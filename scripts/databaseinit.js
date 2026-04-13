@@ -10,11 +10,8 @@ async function createDatabase() {
   await databaseClient`
   CREATE EXTENSION IF NOT EXISTS "pgcrypto";`;
 
-  await databaseClient`DROP TABLE IF EXISTS order_products CASCADE;`;
-  await databaseClient`DROP TABLE IF EXISTS product_categories CASCADE;`;
   await databaseClient`DROP TABLE IF EXISTS cart CASCADE;`;
   await databaseClient`DROP TABLE IF EXISTS images CASCADE;`;
-
   await databaseClient`DROP TABLE IF EXISTS categories CASCADE;`;
   await databaseClient`DROP TABLE IF EXISTS products CASCADE;`;
   await databaseClient`DROP TABLE IF EXISTS users CASCADE;`;
@@ -70,21 +67,6 @@ async function createDatabase() {
       product_id UUID REFERENCES products(id) ON DELETE CASCADE,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS order_products (
-      order_id UUID REFERENCES orders(id) ON DELETE CASCADE,
-      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
-      quantity INT DEFAULT 1,
-      PRIMARY KEY (order_id, product_id)
-    )`;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS product_categories (
-      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
-      category_id UUID REFERENCES categories(id) ON DELETE CASCADE,
-      PRIMARY KEY (product_id, category_id)
-      )`;
 
   await databaseClient`
     CREATE TABLE IF NOT EXISTS cart (

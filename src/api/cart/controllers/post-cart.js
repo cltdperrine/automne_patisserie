@@ -1,18 +1,18 @@
 import databaseClient from "../../../services/database.js";
 
 export default async function createCart(req, res) {
-  const { products_id, users_id } = req.body;
+  const { product_id, user_id, quantity } = req.body;
   try {
     const product = await databaseClient`
-    SELECT id FROM products WHERE id = ${products_id}`;
+    SELECT id FROM products WHERE id = ${product_id}`;
     if (product.length === 0) {
       return res.status(404).send("Product not found");
     }
 
     const result = await databaseClient`
-    INSERT INTO cart (products_id, users_id)
-    VALUES (${products_id}, ${users_id})
-    ON CONFLICT (products_id, users_id) DO NOTHING
+    INSERT INTO cart (product_id, user_id, quantity)
+    VALUES (${product_id}, ${user_id}, ${quantity})
+    ON CONFLICT (product_id, user_id) DO NOTHING
     RETURNING *`;
 
     if (result.length === 0) {

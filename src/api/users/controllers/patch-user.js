@@ -1,7 +1,7 @@
 import databaseClient from "../../../services/database.js";
 
 export default async function patchUser(req, res) {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const { first_name, last_name, email, password } = req.body;
 
   try {
@@ -23,7 +23,7 @@ export default async function patchUser(req, res) {
     ) {
       result = await databaseClient`
         UPDATE users
-        SET first_name = ${first_name}, email = ${email}
+        SET first_name = ${first_name}, last_name = ${last_name}, email = ${email}, password = ${password}
         WHERE id = ${id}
         RETURNING *;
       `;
@@ -37,7 +37,7 @@ export default async function patchUser(req, res) {
     } else if (last_name !== undefined) {
       result = await databaseClient`
         UPDATE users
-        SET email = ${last_name}
+        SET last_name = ${last_name}
         WHERE id = ${id}
         RETURNING *;
       `;
@@ -51,7 +51,7 @@ export default async function patchUser(req, res) {
     } else if (password !== undefined) {
       result = await databaseClient`
         UPDATE users
-        SET email = ${password}
+        SET password = ${password}
         WHERE id = ${id}
         RETURNING *;
       `;
