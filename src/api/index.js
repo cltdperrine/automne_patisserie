@@ -13,6 +13,6 @@ apiRouter.use("/products", productsRouter);
 apiRouter.use("/categories", categoriesRouter);
 apiRouter.use("/orders", ordersRouter);
 apiRouter.use("/images", imagesRouter);
-apiRouter.use("/cart", cartRouter);
+apiRouter.use("/users", cartRouter);
 
 export default apiRouter;

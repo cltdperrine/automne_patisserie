@@ -38,11 +38,30 @@ created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 
   await databaseClient`CREATE TYPE status as ENUM ('pending', 'canceled', 'fulfilled')`;
 
+<<<<<<< Updated upstream
   await databaseClient`CREATE TABLE IF NOT EXISTS orders (
 id SERIAL PRIMARY KEY,
 client_id INT,
 status status NOT NULL DEFAULT 'pending',
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+=======
+  await databaseClient`
+    CREATE TABLE IF NOT EXISTS images (
+      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+      name TEXT,
+      url TEXT,
+      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+    )`;
+
+  await databaseClient`
+    CREATE TABLE IF NOT EXISTS cart (
+      product_id UUID REFERENCES products(id),
+      user_id UUID REFERENCES users(id),
+      quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      PRIMARY KEY(product_id, user_id)
+>>>>>>> Stashed changes
 )`;
 
   await databaseClient`ALTER TABLE orders

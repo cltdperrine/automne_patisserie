@@ -1,13 +1,13 @@
-import deleteCart from "./delete-cart.js";
+import clearCart from "./clear-cart.js";
 import getCart from "./get-cart.js";
-import patchCart from "./patch-cart.js";
-import createCart from "./post-cart.js";
+import addToCart from "./add-to-cart.js";
+import removeFromCart from "./remove-from-cart.js";
 
 const cartController = {
-  create: createCart,
-  get: getCart,
-  patch: patchCart,
-  delete: deleteCart,
+  addToCart,
+  getCart,
+  clearCart,
+  removeFromCart,
 };
 
 export default cartController;
