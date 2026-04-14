@@ -1,5 +1,13 @@
-import { neon } from '@neondatabase/serverless';
+import { neon } from "@neondatabase/serverless";
+import dotenv from "dotenv";
 
-const databaseClient = neon("postgresql://neondb_owner:npg_S9aIVu6PKQhR@ep-jolly-meadow-ab0dd0zk-pooler.eu-west-2.aws.neon.tech/neondb?channel_binding=require&sslmode=require")
+dotenv.config();
+
+const databaseUrl = process.env.DATABASE_URL;
+if (!databaseUrl) {
+  throw new Error("DATABASE_URL environment variable is required");
+}
+
+const databaseClient = neon(databaseUrl);
 
 export default databaseClient;

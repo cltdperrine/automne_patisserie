@@ -1,47 +1,35 @@
-POST http://localhost:5000/api/users/0cc48aa0-e7fe-4b70-b39a-abce282a67d8/cart
-   Content-Type: application/json
-
-   {
-<<<<<<< Updated upstream
-       "products_id": 3,
-       "users_id": 5
-
-=======
-      "product_id": "0fb0cb7e-d8c4-4708-9765-31cbd8dec0ba",
-      "user_id": "b63a0092-66bb-4a50-a325-a4932a91ede3",
-      "quantity": 5
->>>>>>> Stashed changes
-   }
-
-###
-
-<<<<<<< Updated upstream
-GET http://localhost:5000/api/cart/5
-=======
-GET http://localhost:5000/api/users/b63a0092-66bb-4a50-a325-a4932a91ede3/cart
->>>>>>> Stashed changes
-
-###
-
-PATCH http://localhost:5000/api/cart/3/5
-  Content-Type: application/json
-
-  {
-    "quantity": 2
-  }
-
-###
-
-<<<<<<< Updated upstream
-DELETE http://localhost:5000/api/cart
+### Add to cart (user id from URL; body: product_id, quantity)
+POST http://localhost:5000/api/users/1/cart
 Content-Type: application/json
 
 {
-       "products_id": 3,
-       "users_id": 5
+  "product_id": 3,
+  "quantity": 2
 }
 
-=======
-DELETE http://localhost:5000/api/users/0cc48aa0-e7fe-4b70-b39a-abce282a67d8/cart
->>>>>>> Stashed changes
+###
 
+### List cart for user
+GET http://localhost:5000/api/users/1/cart
+
+###
+
+### Set line quantity (absolute)
+PATCH http://localhost:5000/api/users/1/cart/3
+Content-Type: application/json
+
+{
+  "quantity": 5
+}
+
+###
+
+### Remove one line
+DELETE http://localhost:5000/api/users/1/cart/3
+
+###
+
+### Clear entire cart
+DELETE http://localhost:5000/api/users/1/cart
+
+###
