@@ -1,9 +1,13 @@
 import databaseClient from "../../../services/database.js";
 
-export default async function clearCart(req, res) {
-  const userId = Number.parseInt(req.params.user_id, 10);
+function isValidUUID(value) {
+  return typeof value === "string" && value.length === 36;
+}
 
-  if (Number.isNaN(userId) || userId < 1) {
+export default async function clearCart(req, res) {
+  const userId = req.params.user_id;
+
+  if (!isValidUUID(userId)) {
     return res.status(400).send("Invalid user id");
   }
 
@@ -11,7 +15,7 @@ export default async function clearCart(req, res) {
     await databaseClient`
       DELETE FROM cart WHERE user_id = ${userId}`;
 
-    return res.status(200).send("Cart cleared");
+    return res.status(200).json({ message: "Cart cleared" });
   } catch (error) {
     console.error(error);
     return res.status(500).json({ error: error.message });

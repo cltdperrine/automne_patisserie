@@ -1,31 +1,31 @@
 import databaseClient from "../../../services/database.js";
 import { parsePositiveInt } from "../parse-positive-int.js";
 
-export default async function patchCartItem(req, res) {
-  const userParse = parsePositiveInt(req.params.user_id, "user id");
-  const productParse = parsePositiveInt(req.params.product_id, "product id");
+function isValidUUID(value) {
+  return typeof value === "string" && value.length === 36;
+}
 
-  if (!userParse.ok) {
-    return res.status(400).send(userParse.error);
-  }
-  if (!productParse.ok) {
-    return res.status(400).send(productParse.error);
+export default async function patchCartItem(req, res) {
+  const userId = req.params.user_id;
+  const productId = req.params.product_id;
+
+  if (!isValidUUID(userId) || !isValidUUID(productId)) {
+    return res.status(400).send("Invalid user or product id");
   }
 
   const { quantity } = req.body;
+
   const quantityParse = parsePositiveInt(quantity, "quantity");
   if (quantity === undefined || !quantityParse.ok) {
     return res.status(400).send("Valid quantity is required");
   }
 
-  const userId = userParse.value;
-  const productId = productParse.value;
   const qty = quantityParse.value;
 
   try {
     const result = await databaseClient`
       UPDATE cart
-      SET quantity = ${quantity}
+      SET quantity = ${qty}
       WHERE product_id = ${productId} AND user_id = ${userId}
       RETURNING *`;
 
