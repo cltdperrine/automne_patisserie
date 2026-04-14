@@ -1,7 +1,7 @@
 import databaseClient from "../../../services/database.js";
 
 export default async function patchCategory(req, res) {
-  const id = parseInt(req.params.id);
+  const id = req.params.id;
   const { name, image } = req.body;
 
   try {

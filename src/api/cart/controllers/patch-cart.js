@@ -25,7 +25,7 @@ export default async function patchCartItem(req, res) {
   try {
     const result = await databaseClient`
       UPDATE cart
-      SET quantity = ${qty}
+      SET quantity = ${quantity}
       WHERE product_id = ${productId} AND user_id = ${userId}
       RETURNING *`;
 

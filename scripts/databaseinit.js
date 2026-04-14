@@ -24,7 +24,8 @@ async function createDatabase() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`;
 
-  await databaseClient`CREATE TABLE IF NOT EXISTS products (
+  await databaseClient`
+    CREATE TABLE IF NOT EXISTS products (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       name TEXT NOT NULL,
       price NUMERIC(10,2) NOT NULL,
@@ -33,27 +34,31 @@ async function createDatabase() {
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`;
 
-  await databaseClient`CREATE TABLE IF NOT EXISTS categories (
+  await databaseClient`
+    CREATE TABLE IF NOT EXISTS categories (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       name TEXT NOT NULL,
       image TEXT NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`;
 
-  await databaseClient`DROP TABLE IF EXISTS orders CASCADE`;
+  await databaseClient`DROP TABLE IF EXISTS orders CASCADE;`;
+  await databaseClient`DROP TYPE IF EXISTS status;`;
 
-  await databaseClient`DROP TYPE IF EXISTS status`;
+  await databaseClient`
+  CREATE TYPE status AS ENUM ('pending', 'canceled', 'fulfilled')
+`;
 
-  await databaseClient`CREATE TYPE status AS ENUM ('pending', 'canceled', 'fulfilled')`;
-
-  await databaseClient`CREATE TABLE IF NOT EXISTS orders (
+  await databaseClient`
+    CREATE TABLE IF NOT EXISTS orders (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       client_id UUID REFERENCES users(id) ON DELETE CASCADE,
       status status NOT NULL DEFAULT 'pending',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )`;
 
-  await databaseClient`CREATE TABLE IF NOT EXISTS images (
+  await databaseClient`
+    CREATE TABLE IF NOT EXISTS images (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       name TEXT,
       url TEXT,
@@ -62,31 +67,13 @@ async function createDatabase() {
     )`;
 
   await databaseClient`
-    ALTER TABLE images
-    ADD COLUMN IF NOT EXISTS product_id UUID REFERENCES products(id) ON DELETE CASCADE`;
-
-  await databaseClient`DROP TABLE IF EXISTS cart CASCADE`;
-
-  await databaseClient`CREATE TABLE cart (
-      product_id UUID NOT NULL REFERENCES products(id),
-      user_id UUID NOT NULL REFERENCES users(id),
-      quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
+    CREATE TABLE IF NOT EXISTS cart (
+      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
+      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+      quantity INT NOT NULL DEFAULT 1,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY (product_id, user_id)
-    )`;
-
-  await databaseClient`CREATE TABLE IF NOT EXISTS order_products (
-      order_id UUID NOT NULL REFERENCES orders(id) ON DELETE CASCADE,
-      product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-      quantity INT NOT NULL DEFAULT 1 CHECK (quantity > 0),
-      PRIMARY KEY (order_id, product_id)
-    )`;
-
-  await databaseClient`CREATE TABLE IF NOT EXISTS product_categories (
-      product_id UUID NOT NULL REFERENCES products(id) ON DELETE CASCADE,
-      category_id UUID NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
-      PRIMARY KEY (product_id, category_id)
-    )`;
+      PRIMARY KEY(product_id, user_id)
+)`;
 }
 
 createDatabase()
