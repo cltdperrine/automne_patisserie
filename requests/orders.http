@@ -1,0 +1,49 @@
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+@json = application/json
+
+# Existing user id required by orders.client_id foreign key
+@userId = 11111111-1111-1111-1111-111111111111
+# Set this value manually after creating an order
+@orderId = 44444444-4444-4444-4444-444444444444
+
+### Create order
+POST {{apiUrl}}/orders
+Content-Type: {{json}}
+
+{
+  "client_id": "{{userId}}",
+  "status": "pending"
+}
+
+###
+
+### Get order by id
+GET {{apiUrl}}/orders/{{orderId}}
+
+###
+
+### Patch order status
+PATCH {{apiUrl}}/orders/{{orderId}}
+Content-Type: {{json}}
+
+{
+  "status": "fulfilled"
+}
+
+###
+
+### Patch order client + status
+PATCH {{apiUrl}}/orders/{{orderId}}
+Content-Type: {{json}}
+
+{
+  "client_id": "{{userId}}",
+  "status": "canceled"
+}
+
+###
+
+### Delete order
+DELETE {{apiUrl}}/orders/{{orderId}}
+

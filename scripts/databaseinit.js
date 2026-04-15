@@ -1,5 +1,6 @@
 import { neon } from "@neondatabase/serverless";
 import dotenv from "dotenv";
+import { createDatabaseSchema } from "./database-schema.js";
 
 dotenv.config();
 
@@ -11,76 +12,11 @@ if (!databaseUrl) {
 
 const databaseClient = neon(databaseUrl);
 
-async function createDatabase() {
-  await databaseClient`
-  CREATE EXTENSION IF NOT EXISTS "pgcrypto"`;
-
-  await databaseClient`CREATE TABLE IF NOT EXISTS users (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      first_name TEXT NOT NULL,
-      last_name TEXT NOT NULL,
-      email TEXT UNIQUE NOT NULL,
-      password TEXT NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS products (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      name TEXT NOT NULL,
-      price NUMERIC(10,2) NOT NULL,
-      description TEXT,
-      allergens TEXT,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS categories (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      name TEXT NOT NULL,
-      image TEXT NOT NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-  await databaseClient`DROP TABLE IF EXISTS orders CASCADE;`;
-  await databaseClient`DROP TYPE IF EXISTS status;`;
-
-  await databaseClient`
-  CREATE TYPE status AS ENUM ('pending', 'canceled', 'fulfilled')
-`;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS orders (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      client_id UUID REFERENCES users(id) ON DELETE CASCADE,
-      status status NOT NULL DEFAULT 'pending',
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS images (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      name TEXT,
-      url TEXT,
-      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )`;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS cart (
-      product_id UUID REFERENCES products(id) ON DELETE CASCADE,
-      user_id UUID REFERENCES users(id) ON DELETE CASCADE,
-      quantity INT NOT NULL DEFAULT 1,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-      PRIMARY KEY(product_id, user_id)
-)`;
-}
-
-createDatabase()
+createDatabaseSchema(databaseClient)
   .then(() => {
-    console.log("Database created");
+    console.log("Database initialized");
   })
   .catch((error) => {
-    console.log("Error during database creation", error);
+    console.error("Error during database initialization", error);
     process.exit(1);
   });

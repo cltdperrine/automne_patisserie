@@ -1,0 +1,51 @@
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+@json = application/json
+
+# Existing product id required by images.product_id foreign key
+@productId = 22222222-2222-2222-2222-222222222222
+# Set this value manually after creating an image
+@imageId = 55555555-5555-5555-5555-555555555555
+
+### Create image
+POST {{apiUrl}}/images
+Content-Type: {{json}}
+
+{
+  "name": "Autumn Tart Main",
+  "url": "https://cdn.example.com/products/autumn-tart-main.jpg",
+  "product_id": "{{productId}}"
+}
+
+###
+
+### Get image by id
+GET {{apiUrl}}/images/{{imageId}}
+
+###
+
+### Patch image URL
+PATCH {{apiUrl}}/images/{{imageId}}
+Content-Type: {{json}}
+
+{
+  "url": "https://cdn.example.com/products/autumn-tart-main-v2.jpg"
+}
+
+###
+
+### Patch full image payload
+PATCH {{apiUrl}}/images/{{imageId}}
+Content-Type: {{json}}
+
+{
+  "name": "Autumn Tart Hero",
+  "url": "https://cdn.example.com/products/autumn-tart-hero.jpg",
+  "product_id": "{{productId}}"
+}
+
+###
+
+### Delete image
+DELETE {{apiUrl}}/images/{{imageId}}
+

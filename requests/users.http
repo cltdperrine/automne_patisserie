@@ -1,0 +1,44 @@
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+@json = application/json
+
+# Set this value manually after creating a user
+@userId = 11111111-1111-1111-1111-111111111111
+
+### Health check
+GET {{baseUrl}}/health
+
+###
+
+### Create user
+POST {{apiUrl}}/users
+Content-Type: {{json}}
+
+{
+  "first_name": "Perrine",
+  "last_name": "Cltd",
+  "email": "perrine@example.com",
+  "password": "very-strong-password"
+}
+
+###
+
+### Get user by id
+GET {{apiUrl}}/users/{{userId}}
+
+###
+
+### Patch user
+PATCH {{apiUrl}}/users/{{userId}}
+Content-Type: {{json}}
+
+{
+  "first_name": "Perrine Updated",
+  "email": "perrine.updated@example.com"
+}
+
+###
+
+### Delete user
+DELETE {{apiUrl}}/users/{{userId}}
+

@@ -1,0 +1,37 @@
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+@json = application/json
+
+# Set this value manually after creating a category
+@categoryId = 33333333-3333-3333-3333-333333333333
+
+### Create category
+POST {{apiUrl}}/categories
+Content-Type: {{json}}
+
+{
+  "name": "Viennoiseries",
+  "image": "https://cdn.example.com/categories/viennoiseries.jpg"
+}
+
+###
+
+### Get category by id
+GET {{apiUrl}}/categories/{{categoryId}}
+
+###
+
+### Patch category
+PATCH {{apiUrl}}/categories/{{categoryId}}
+Content-Type: {{json}}
+
+{
+  "name": "Seasonal Viennoiseries",
+  "image": "https://cdn.example.com/categories/seasonal-viennoiseries.jpg"
+}
+
+###
+
+### Delete category
+DELETE {{apiUrl}}/categories/{{categoryId}}
+

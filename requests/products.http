@@ -1,0 +1,39 @@
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+@json = application/json
+
+# Set this value manually after creating a product
+@productId = 22222222-2222-2222-2222-222222222222
+
+### Create product
+POST {{apiUrl}}/products
+Content-Type: {{json}}
+
+{
+  "name": "Autumn Tart",
+  "price": 8.5,
+  "description": "Seasonal tart with apple and cinnamon",
+  "allergens": "gluten,nuts"
+}
+
+###
+
+### Get product by id
+GET {{apiUrl}}/products/{{productId}}
+
+###
+
+### Patch product
+PATCH {{apiUrl}}/products/{{productId}}
+Content-Type: {{json}}
+
+{
+  "name": "Autumn Tart Deluxe",
+  "price": 9.9
+}
+
+###
+
+### Delete product
+DELETE {{apiUrl}}/products/{{productId}}
+
