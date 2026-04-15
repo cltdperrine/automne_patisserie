@@ -1,20 +1,29 @@
 import databaseClient from "../../../services/database.js";
 
+function isValidUUID(value) {
+  return typeof value === "string" && value.length === 36;
+}
+
 export default async function patchProduct(req, res) {
   const id = req.params.id;
   const { name, price, description, allergens } = req.body;
 
-  try {
-    if (
-      name === undefined &&
-      price === undefined &&
-      description === undefined &&
-      allergens === undefined
-    ) {
-      return res.status(400).send("No data to update");
-    }
+  if (!isValidUUID(id)) {
+    return res.status(400).send("Invalid product id");
+  }
 
+  if (
+    name === undefined &&
+    price === undefined &&
+    description === undefined &&
+    allergens === undefined
+  ) {
+    return res.status(400).send("No data to update");
+  }
+
+  try {
     let result;
+
     if (
       name !== undefined &&
       price !== undefined &&
@@ -44,7 +53,7 @@ export default async function patchProduct(req, res) {
     SET description = ${description}
     WHERE id = ${id}
     RETURNING *`;
-    } else if (allergens !== undefined) {
+    } else {
       result = await databaseClient`
     UPDATE products
     SET allergens = ${allergens}
@@ -57,7 +66,9 @@ export default async function patchProduct(req, res) {
     }
     return res.status(200).json(result[0]);
   } catch (error) {
-    console.log(error);
-    return res.status(500).send("Error during product update", error.message);
+    console.error(error);
+    return res
+      .status(500)
+      .json({ message: "Error during product update", error: error.message });
   }
 }

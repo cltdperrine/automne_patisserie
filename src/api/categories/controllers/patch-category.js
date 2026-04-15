@@ -38,6 +38,6 @@ export default async function patchCategory(req, res) {
     console.error(error);
     return res
       .status(500)
-      .send({ message: "Error during category update", error: error.message });
+      .json({ message: "Error during category update", error: error.message });
   }
 }
