@@ -18,6 +18,9 @@ Content-Type: {{json}}
 
 ###
 
+### Get all products
+GET {{apiUrl}}/products
+
 ### Get product by id
 GET {{apiUrl}}/products/{{productId}}
 

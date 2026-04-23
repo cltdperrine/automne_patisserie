@@ -1,9 +1,11 @@
 import { Router } from "express";
 import productsController from "./controllers/index.js";
+import usersController from "../users/controllers/index.js";
 
 const productsRouter = Router();
 
 productsRouter.post("/", productsController.create);
+productsRouter.get("/", productsController.getAll);
 productsRouter.get("/:id", productsController.get);
 productsRouter.patch("/:id", productsController.patch);
 productsRouter.delete("/:id", productsController.delete);
