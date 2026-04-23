@@ -19,6 +19,9 @@ Content-Type: {{json}}
 
 ###
 
+### Get all images
+GET {{apiUrl}}/images
+
 ### Get image by id
 GET {{apiUrl}}/images/{{imageId}}
 
