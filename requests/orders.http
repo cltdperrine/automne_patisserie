@@ -18,6 +18,9 @@ Content-Type: {{json}}
 
 ###
 
+### Get all orders
+GET {{apiUrl}}/orders
+
 ### Get order by id
 GET {{apiUrl}}/orders/{{orderId}}
 
