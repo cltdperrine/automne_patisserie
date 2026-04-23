@@ -16,6 +16,9 @@ Content-Type: {{json}}
 
 ###
 
+### Get all categories
+GET {{apiUrl}}/categories
+
 ### Get category by id
 GET {{apiUrl}}/categories/{{categoryId}}
 
