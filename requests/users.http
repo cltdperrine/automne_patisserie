@@ -23,6 +23,9 @@ Content-Type: {{json}}
 
 ###
 
+### Get all users
+GET {{apiUrl}}/users
+
 ### Get user by id
 GET {{apiUrl}}/users/{{userId}}
 
