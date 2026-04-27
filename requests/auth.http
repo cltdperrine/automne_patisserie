@@ -1,0 +1,23 @@
+@baseUrl = http://localhost:5000
+@apiUrl = {{baseUrl}}/api
+@json = application/json
+
+POST {{apiUrl}}/auth/register
+Content-Type: {{json}}
+
+{
+ "first_name": "toto",
+ "last_name": "tata",
+ "email": "me@mail.com",
+ "password": "1234"
+}
+
+###
+
+POST {{apiUrl}}/auth/sign-in
+Content-Type: {{json}}
+
+{
+ "email": "me@mail.com",
+ "password": "1234"
+}
