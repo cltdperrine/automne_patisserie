@@ -6,13 +6,21 @@ export async function createDatabaseSchema(databaseClient) {
   await databaseClient`
     CREATE TABLE IF NOT EXISTS users (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      first_name TEXT NOT NULL,
-      last_name TEXT NOT NULL,
+      first_name TEXT,
+      last_name TEXT,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `;
+      )
+      `;
+  await databaseClient`
+        CREATE TABLE IF NOT EXISTS categories (
+          id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+          name TEXT NOT NULL,
+          image TEXT NOT NULL,
+          created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+      `;
 
   await databaseClient`
     CREATE TABLE IF NOT EXISTS products (
@@ -22,15 +30,6 @@ export async function createDatabaseSchema(databaseClient) {
       description TEXT,
       allergens TEXT,
       category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-    )
-  `;
-
-  await databaseClient`
-    CREATE TABLE IF NOT EXISTS categories (
-      id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-      name TEXT NOT NULL,
-      image TEXT NOT NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `;
