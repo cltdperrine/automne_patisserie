@@ -21,6 +21,7 @@ export async function createDatabaseSchema(databaseClient) {
       price NUMERIC(10,2) NOT NULL,
       description TEXT,
       allergens TEXT,
+      category_id UUID REFERENCES categories(id) ON DELETE SET NULL,
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
     )
   `;
