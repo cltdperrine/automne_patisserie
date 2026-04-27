@@ -2,9 +2,9 @@ import databaseClient from "../../../services/database.js";
 import bcrypt from "bcrypt";
 
 export default async function register(req, res) {
-  const { first_name, last_name, email, password } = req.body;
+  const { email, password } = req.body;
 
-  if (!first_name || !last_name || !email || !password) {
+  if ( !email || !password) {
     return res.status(500).json("All fields are required");
   }
 
@@ -12,9 +12,9 @@ export default async function register(req, res) {
 
   try {
     const result = await databaseClient`        
-        INSERT INTO users (first_name, last_name, email, password)
-        VALUES (${first_name}, ${last_name}, ${email}, ${hashed})
-        RETURNING first_name, last_name, email;`;
+        INSERT INTO users (email, password)
+        VALUES (${email}, ${hashed})
+        RETURNING email;`;
 
     console.log(result);
 

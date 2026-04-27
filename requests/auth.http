@@ -11,3 +11,13 @@ Content-Type: {{json}}
  "email": "me@mail.com",
  "password": "1234"
 }
+
+###
+
+POST {{apiUrl}}/auth/sign-in
+Content-Type: {{json}}
+
+{
+ "email": "me@mail.com",
+ "password": "1234"
+}
