@@ -6,9 +6,7 @@ POST {{apiUrl}}/auth/register
 Content-Type: {{json}}
 
 {
- "first_name": "toto",
- "last_name": "tata",
- "email": "me@mail.com",
+ "email": "hello@mail.com",
  "password": "1234"
 }
 

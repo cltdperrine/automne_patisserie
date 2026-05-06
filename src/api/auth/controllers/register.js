@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 export default async function register(req, res) {
   const { email, password } = req.body;
 
-  if ( !email || !password) {
+  if (!email || !password) {
     return res.status(500).json("All fields are required");
   }
 
@@ -15,8 +15,6 @@ export default async function register(req, res) {
         INSERT INTO users (email, password)
         VALUES (${email}, ${hashed})
         RETURNING email;`;
-
-    console.log(result);
 
     return res.status(201).json(result);
   } catch (error) {
