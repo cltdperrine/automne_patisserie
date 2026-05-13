@@ -2,10 +2,16 @@ import databaseClient from "../../../services/database.js";
 import bcrypt from "bcrypt";
 
 export default async function register(req, res) {
-  const { email, password } = req.body;
+  const { email, password, confirmPassword } = req.body;
 
-  if ( !email || !password) {
+  if (!email || !password) {
     return res.status(500).json("All fields are required");
+  }
+
+  if (password !== confirmPassword) {
+    return res.status(400).json({
+      message: "Passwords don't match",
+    });
   }
 
   const hashed = await bcrypt.hash(password, 10);
@@ -15,8 +21,6 @@ export default async function register(req, res) {
         INSERT INTO users (email, password)
         VALUES (${email}, ${hashed})
         RETURNING email;`;
-
-    console.log(result);
 
     return res.status(201).json(result);
   } catch (error) {
