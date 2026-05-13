@@ -1,9 +1,13 @@
 import databaseClient from "../../../services/database.js";
 
-export default async function getCart(req, res) {
-  const userId = Number.parseInt(req.params.user_id, 10);
+function isValidUUID(value) {
+  return typeof value === "string" && value.length === 36;
+}
 
-  if (Number.isNaN(userId)) {
+export default async function getCart(req, res) {
+  const userId = req.params.user_id;
+
+  if (!isValidUUID(userId)) {
     return res.status(400).send("Invalid user id");
   }
 
@@ -13,7 +17,7 @@ export default async function getCart(req, res) {
 
     return res.status(200).json(result);
   } catch (error) {
-    console.log(error);
+    console.error(error);
     return res.status(500).json({ error: error.message });
   }
 }

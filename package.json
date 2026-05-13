@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server.js"
+    "dev": "nodemon src/server.js",
+    "db:init": "node scripts/databaseinit.js",
+    "db:reset": "ALLOW_DB_RESET=true node scripts/databasereset.js"
   },
   "repository": {
     "type": "git",
@@ -21,8 +23,11 @@
   "homepage": "https://github.com/cltdperrine/automne_patisserie#readme",
   "dependencies": {
     "@neondatabase/serverless": "^1.0.2",
+    "bcrypt": "^6.0.0",
+    "cors": "^2.8.6",
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
     "nodemon": "^3.1.14"
   },
   "devDependencies": {

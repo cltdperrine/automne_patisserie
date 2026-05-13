@@ -1,13 +1,17 @@
 import databaseClient from "../../../services/database.js";
 
-export default async function removeFromCart(req, res) {
-  const userId = Number.parseInt(req.params.user_id, 10);
-  const productId = Number.parseInt(req.params.product_id, 10);
+function isValidUUID(value) {
+  return typeof value === "string" && value.length === 36;
+}
 
-  if (Number.isNaN(userId) || userId < 1) {
+export default async function removeFromCart(req, res) {
+  const userId = req.params.user_id;
+  const productId = req.params.product_id;
+
+  if (!isValidUUID(userId)) {
     return res.status(400).send("Invalid user id");
   }
-  if (Number.isNaN(productId) || productId < 1) {
+  if (!isValidUUID(productId)) {
     return res.status(400).send("Invalid product id");
   }
 

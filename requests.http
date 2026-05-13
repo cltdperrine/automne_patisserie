@@ -1,35 +1,11 @@
-### Add to cart (user id from URL; body: product_id, quantity)
-POST http://localhost:5000/api/users/1/cart
-Content-Type: application/json
+### Request collection entry point
+### Resource-specific files are now available in /requests:
+### - requests/users.http
+### - requests/products.http
+### - requests/categories.http
+### - requests/orders.http
+### - requests/images.http
+### - requests/cart.http
 
-{
-  "product_id": 3,
-  "quantity": 2
-}
-
-###
-
-### List cart for user
-GET http://localhost:5000/api/users/1/cart
-
-###
-
-### Set line quantity (absolute)
-PATCH http://localhost:5000/api/users/1/cart/3
-Content-Type: application/json
-
-{
-  "quantity": 5
-}
-
-###
-
-### Remove one line
-DELETE http://localhost:5000/api/users/1/cart/3
-
-###
-
-### Clear entire cart
-DELETE http://localhost:5000/api/users/1/cart
-
-###
+### Health check
+GET http://localhost:5000/health
