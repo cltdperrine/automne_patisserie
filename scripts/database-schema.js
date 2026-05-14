@@ -4,12 +4,23 @@ export async function createDatabaseSchema(databaseClient) {
   `;
 
   await databaseClient`
+    DO $$
+    BEGIN
+      CREATE TYPE user_role AS ENUM ('admin', 'user', 'moderator');
+    EXCEPTION
+      WHEN duplicate_object THEN NULL;
+    END
+    $$;
+  `;
+
+  await databaseClient`
     CREATE TABLE IF NOT EXISTS users (
       id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
       first_name TEXT,
       last_name TEXT,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
+      role user_role NOT NULL DEFAULT 'user',
       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
       `;
@@ -82,6 +93,7 @@ export async function resetDatabaseSchema(databaseClient) {
   await databaseClient`DROP TABLE IF EXISTS products CASCADE;`;
   await databaseClient`DROP TABLE IF EXISTS users CASCADE;`;
   await databaseClient`DROP TYPE IF EXISTS status;`;
+  await databaseClient`DROP TYPE IF EXISTS user_role;`;
 
   await createDatabaseSchema(databaseClient);
 }
