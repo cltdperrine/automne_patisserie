@@ -194,7 +194,49 @@ const categories = [
   },
 ];
 
+const SEED_USER_EMAIL = "seed@automne.test";
+
+const orderDefs = [
+  {
+    status: "fulfilled",
+    items: [
+      ["Croissant au beurre", 30],
+      ["Pain au chocolat", 20],
+      ["Tarte aux pommes", 10],
+    ],
+  },
+  {
+    status: "fulfilled",
+    items: [
+      ["Croissant au beurre", 20],
+      ["Pain au chocolat", 15],
+      ["Macaron vanille", 15],
+      ["Tarte au citron meringuée", 10],
+    ],
+  },
+  {
+    status: "fulfilled",
+    items: [["Tarte aux pommes", 10]],
+  },
+  {
+    status: "pending",
+    items: [["Fraisier", 100]],
+  },
+];
+
 async function seed() {
+  const [seedUser] = await databaseClient`
+    INSERT INTO users (first_name, last_name, email, password)
+    VALUES ('Seed', 'Customer', ${SEED_USER_EMAIL}, 'seeded-placeholder')
+    ON CONFLICT (email) DO UPDATE SET first_name = EXCLUDED.first_name
+    RETURNING id
+  `;
+
+  await databaseClient`
+    DELETE FROM order_items
+    WHERE order_id IN (SELECT id FROM orders WHERE client_id = ${seedUser.id})
+  `;
+  await databaseClient`DELETE FROM orders WHERE client_id = ${seedUser.id}`;
   await databaseClient`DELETE FROM images`;
   await databaseClient`DELETE FROM products`;
   await databaseClient`DELETE FROM categories`;
@@ -229,15 +271,58 @@ async function seed() {
     }
   }
 
-  return { categoryCount, productCount, imageCount };
+  const allProducts =
+    await databaseClient`SELECT id, name, price FROM products`;
+  const productByName = new Map(allProducts.map((p) => [p.name, p]));
+
+  let orderCount = 0;
+  let orderItemCount = 0;
+
+  for (const def of orderDefs) {
+    const [order] = await databaseClient`
+      INSERT INTO orders (client_id, status)
+      VALUES (${seedUser.id}, ${def.status})
+      RETURNING id
+    `;
+    orderCount += 1;
+
+    for (const [productName, quantity] of def.items) {
+      const product = productByName.get(productName);
+      if (!product) {
+        console.warn(`Skipping unknown seed product: ${productName}`);
+        continue;
+      }
+      await databaseClient`
+        INSERT INTO order_items (order_id, product_id, quantity, unit_price)
+        VALUES (${order.id}, ${product.id}, ${quantity}, ${product.price})
+      `;
+      orderItemCount += 1;
+    }
+  }
+
+  return {
+    categoryCount,
+    productCount,
+    imageCount,
+    orderCount,
+    orderItemCount,
+  };
 }
 
 seed()
-  .then(({ categoryCount, productCount, imageCount }) => {
-    console.log(
-      `Database seeded: ${categoryCount} categories, ${productCount} products, ${imageCount} images`,
-    );
-  })
+  .then(
+    ({
+      categoryCount,
+      productCount,
+      imageCount,
+      orderCount,
+      orderItemCount,
+    }) => {
+      console.log(
+        `Database seeded: ${categoryCount} categories, ${productCount} products, ${imageCount} images, ${orderCount} orders, ${orderItemCount} order items`,
+      );
+    },
+  )
   .catch((error) => {
     console.error("Error during database seeding", error);
     process.exit(1);

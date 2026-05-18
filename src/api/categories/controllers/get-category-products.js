@@ -1,5 +1,7 @@
 import databaseClient from "../../../services/database.js";
 
+// TODO: move this logic in the products controller, we need to add a category filter to the get all products endpoint
+
 function isValidUUID(value) {
   return typeof value === "string" && value.length === 36;
 }

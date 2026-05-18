@@ -1,5 +1,7 @@
 import databaseClient from "../../../services/database.js";
 
+// TODO: update code to handle category filter ( query param )
+
 export default async function getProducts(req, res) {
   try {
     const products = await databaseClient`
