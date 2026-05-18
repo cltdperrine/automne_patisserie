@@ -36,6 +36,13 @@ export default async function signIn(req, res) {
   // sign a token
   const token = jwt.sign(payload, SIGNATURE);
 
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+    maxAge: 7 * 24 * 60 * 60 * 1000,
+  });
+
   //send back the user data with the token
   return res.status(200).json({ user: payload, token });
 }

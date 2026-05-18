@@ -8,12 +8,6 @@ export default async function register(req, res) {
     return res.status(500).json("All fields are required");
   }
 
-  if (password !== confirmPassword) {
-    return res.status(400).json({
-      message: "Passwords don't match",
-    });
-  }
-
   const hashed = await bcrypt.hash(password, 10);
 
   try {
