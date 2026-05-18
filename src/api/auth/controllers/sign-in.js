@@ -8,8 +8,6 @@ export default async function signIn(req, res) {
   // get email and password sent by the user
   const { email, password } = req.body;
 
-  console.log(req.body);
-
   // get the user from the db using the email
   const [user] = await databaseClient`
   SELECT * FROM users WHERE email = ${email}`;

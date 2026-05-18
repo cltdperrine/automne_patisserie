@@ -2,7 +2,6 @@ import databaseClient from "../../../services/database.js";
 
 export default async function getCategories(req, res) {
   try {
-    console.log(req.cookies);
     const categories = await databaseClient`
       SELECT * FROM categories`;
 
