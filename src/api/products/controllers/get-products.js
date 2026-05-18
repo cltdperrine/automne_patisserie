@@ -3,6 +3,7 @@ import databaseClient from "../../../services/database.js";
 // TODO: update code to handle category filter ( query param )
 
 export default async function getProducts(req, res) {
+  console.log(req.cookies);
   try {
     const { categoryId } = req.query;
     let products;
