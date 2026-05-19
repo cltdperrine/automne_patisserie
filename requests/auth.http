@@ -16,6 +16,6 @@ POST {{apiUrl}}/auth/sign-in
 Content-Type: {{json}}
 
 {
- "email": "me@mail.com",
+ "email": "hello@mail.com",
  "password": "1234"
 }
